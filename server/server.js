@@ -6,7 +6,7 @@ const port = 3000
 const publicpath = path.join(__dirname ,"/../public")
 
 
-var {generateMessage}=  require('./utils/message')
+var {generateMessage,generateLocationMessage}=  require('./utils/message')
 
 var app = express()
 var server = http.createServer(app)
@@ -40,6 +40,10 @@ io.on('connection',(socket)=>{
        callback(generateMessage("Me",msg.text));
 
 
+    })
+    socket.on('userGeolocation', function (locationdata){
+        io.emit('newLocationMessage',generateLocationMessage('admine',locationdata.latitude,locationdata.longitude))
+        
     })
     
 })
