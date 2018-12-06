@@ -29,22 +29,26 @@ jQuery("#message-form").on("submit",function(e){
     },function(data){
         var li = jQuery(`<li>From ${data.from} : ${data.text}</li>`);
         jQuery('#messages').append(li);
+        jQuery('#txt_message').val('');
     });
 });
 
 
-
- jQuery('#send-location').on('click',function(){
+var locationBtn = jQuery('#send-location')
+locationBtn .on('click',function(){
     if(!navigator.geolocation){
         return alert("geolocation is not support by your browser");
     }
+    locationBtn.attr("disabled","disabled").text("sending");
     navigator.geolocation.getCurrentPosition(function(pos){
+        locationBtn.removeAttr("disabled").text("send location");
         socket.emit('userGeolocation',{
             latitude:pos.coords.latitude,
             longitude:pos.coords.longitude
         })
         //console.log(pos.coords.latitude,"        ",pos.coords.longitude);
     },function(){
+        locationBtn.removeAttr("disabled").text("send location");
         alert("unable to reach to your location")
     })
  })
