@@ -17,9 +17,27 @@ function scrolldown(){
 
 
 socket.on('connect',function(){
-    console.log("connected to server");
+    var params =  jQuery.deparam(window.location.search);
+    socket.emit('join',params,function(err){
+        if(err){
+            alert(err);
+            window.location.href = '/';
+        }else{
+            //console.log("no error");
+        }
+    })
     
 });
+socket.on('updateUserList',function(userNameList){
+    var ol = jQuery('<ol></ol>');
+    userNameList.forEach(user =>{
+        var il = jQuery('<li></il>').text(user);
+        ol.append(il);
+    });
+    jQuery('#users').html(ol);
+});
+
+
 socket.on('disconnect',function(data){
     console.log("sever disconnected");
 });
