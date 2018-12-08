@@ -7,6 +7,5 @@ describe("generateMessage",()=>{
         var res = generateMessage(usersend, text);
         expect(res.text).toBe(text);
         expect(res.from).toBe(usersend);
-        
     })
 })

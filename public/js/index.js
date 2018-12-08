@@ -8,15 +8,36 @@ socket.on('disconnect',function(data){
 });
 
 socket.on('newMessage',function(data){
-    var li = jQuery(`<li>From ${data.from} : ${data.text}</li>`);
-    jQuery('#messages').append(li);
+
+    var datecomming = moment(data.createdAt).format('h:mm a');
+    var template =  jQuery('#message-template').html();
+    var html = Mustache.render(template,{
+        text:data.text,
+        from:data.from,
+        createdAt:datecomming
+    });
+    jQuery('#messages').append(html);
+
+    // var datecomming = moment(data.createdAt).format('h:mm a');
+    // var li = jQuery(`<li>From ${data.from} ${datecomming} : ${data.text}</li>`);
+    // jQuery('#messages').append(li);
 });
 
 
 
 socket.on('newLocationMessage',function(data){
-    var li = jQuery(`<li>From:${data.from} <a href=${data.url} >Location of user </a> </li>`);
-    jQuery('#messages').append(li);
+
+    var datecomming = moment(data.createdAt).format('h:mm a');
+    var template =  jQuery('#message-location-template').html();
+    var html = Mustache.render(template,{
+        url:data.url,
+        from:data.from,
+        createdAt:datecomming
+    });
+    jQuery('#messages').append(html);
+    // var datecomming = moment(data.createdAt).format('h:mm a');
+    // var li = jQuery(`<li>From:${data.from} ${datecomming} <a href=${data.url} >Location of user </a> </li>`);
+    // jQuery('#messages').append(li);
 });
 
 
@@ -27,9 +48,14 @@ jQuery("#message-form").on("submit",function(e){
         to :"User",
         text:jQuery('#txt_message').val()
     },function(data){
-        var li = jQuery(`<li>From ${data.from} : ${data.text}</li>`);
-        jQuery('#messages').append(li);
-        jQuery('#txt_message').val('');
+        var datecomming = moment(data.createdAt).format('h:mm a');
+        var template =  jQuery('#message-template').html();
+        var html = Mustache.render(template,{
+            text:data.text,
+            from:data.from,
+            createdAt:datecomming
+        });
+        jQuery('#messages').append(html);
     });
 });
 
