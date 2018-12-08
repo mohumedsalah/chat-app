@@ -83,14 +83,7 @@ jQuery("#message-form").on("submit",function(e){
     socket.emit('createMessage',{
         to :"User",
         text:jQuery('#txt_message').val()
-    },function(data){
-        var datecomming = moment(data.createdAt).format('h:mm a');
-        var template =  jQuery('#message-template').html();
-        var html = Mustache.render(template,{
-            text:data.text,
-            from:data.from,
-            createdAt:datecomming
-        });
+    },function(){
         jQuery('#txt_message').val("")
         jQuery('#messages').append(html);
         scrolldown();

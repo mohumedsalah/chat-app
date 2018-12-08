@@ -55,19 +55,20 @@ io.on('connection',(socket)=>{
     })
     socket.on('createMessage', function (msg,callback){
         //console.log(msg);
-        
-        console.log(msg);
-        socket.broadcast.emit("newMessage",generateMessage(msg.to,msg.text))
+        var user = users.getUser(socket.id);
+        //console.log(msg);
+        io.to(user.room).emit("newMessage",generateMessage(user.name,msg.text))
        
        
         //console.log(callback);
       
-       callback(generateMessage("Me",msg.text));
+        callback();
 
 
     })
     socket.on('userGeolocation', function (locationdata){
-        io.emit('newLocationMessage',generateLocationMessage('admine',locationdata.latitude,locationdata.longitude))
+        var user = users.getUser(socket.id);
+        io.to(user.room).emit('newLocationMessage',generateLocationMessage(user.name,locationdata.latitude,locationdata.longitude))
         
     })
     
